@@ -1,0 +1,44 @@
+{
+    "transcript": {
+      "meeting_id": "infra-monitoring-review",
+      "segments": [
+        {
+          "speaker": "Huy",
+          "timestamp": "00:00",
+          "text": "Hôm nay mình review hệ thống monitoring cho cụm AI inference. Mục tiêu là phát hiện GPU overload và cảnh báo latency tăng bất thường."
+        },
+        {
+          "speaker": "Mai",
+          "timestamp": "00:37",
+          "text": "Hiện tại Prometheus đã scrape metric từ các service chính, nhưng chưa có dashboard riêng cho queue inference và VRAM usage."
+        },
+        {
+          "speaker": "Khoa",
+          "timestamp": "01:18",
+          "text": "Mình đề xuất dùng Grafana alert để gửi cảnh báo qua Slack khi GPU memory vượt 90 phần trăm hoặc request timeout tăng liên tục."
+        },
+        {
+          "speaker": "Huy",
+          "timestamp": "02:02",
+          "text": "Ngoài monitoring realtime, team cần lưu log lỗi để truy vết model nào gây crash và thời điểm deploy tương ứng."
+        },
+        {
+          "speaker": "Mai",
+          "timestamp": "02:45",
+          "text": "Phần log aggregation có thể dùng Loki để đồng bộ với Grafana. Như vậy dev chỉ cần xem một dashboard thay vì mở nhiều hệ thống."
+        },
+        {
+          "speaker": "Khoa",
+          "timestamp": "03:21",
+          "text": "Một vấn đề nữa là node GPU ở môi trường staging chưa đồng bộ driver CUDA nên metric thu được đôi lúc bị sai."
+        },
+        {
+          "speaker": "Huy",
+          "timestamp": "04:03",
+          "text": "Chốt nhé: tuần này ưu tiên dashboard monitoring cơ bản, alert Slack và tài liệu hướng dẫn xử lý khi inference bị nghẽn."
+        }
+      ],
+      "meeting_date": "2026-05-21",
+      "title": "Infrastructure Monitoring Review - AI Inference System"
+    }
+  }

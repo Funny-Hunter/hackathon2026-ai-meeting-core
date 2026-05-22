@@ -1,0 +1,44 @@
+{
+    "transcript": {
+      "meeting_id": "demo-product-sync",
+      "segments": [
+        {
+          "speaker": "Linh",
+          "timestamp": "00:00",
+          "text": "Hôm nay mình cần chốt phạm vi MVP cho trợ lý họp AI. Ưu tiên là upload transcript, tóm tắt và hỏi đáp theo nội dung cuộc họp."
+        },
+        {
+          "speaker": "Nam",
+          "timestamp": "00:42",
+          "text": "Phần hỏi đáp nên trả lời kèm nguồn timestamp để người dùng kiểm chứng nhanh. Nếu không có nguồn thì phải nói rõ là chưa đủ dữ liệu."
+        },
+        {
+          "speaker": "Trang",
+          "timestamp": "01:20",
+          "text": "Về kỹ thuật, mình đề xuất lưu transcript vào Qdrant để tìm kiếm semantic và Neo4j để phân tích speaker, topic, quan hệ trao đổi."
+        },
+        {
+          "speaker": "Linh",
+          "timestamp": "02:05",
+          "text": "MVP tuần này cần có demo local. Nam phụ trách UI chat, Trang kiểm tra pipeline ingest và phần graph."
+        },
+        {
+          "speaker": "Nam",
+          "timestamp": "02:44",
+          "text": "UI chỉ cần một trang đơn giản: bên trái summary, bên phải khung chat, có trạng thái nguồn trả về từ transcript."
+        },
+        {
+          "speaker": "Trang",
+          "timestamp": "03:15",
+          "text": "Rủi ro là OpenAI key và database local chưa được cấu hình đồng nhất. Nên có mock mode để test giao diện trước."
+        },
+        {
+          "speaker": "Linh",
+          "timestamp": "04:02",
+          "text": "Chốt nhé: hôm nay có mock demo, sau đó mới nối live RAG. Deadline bản demo là cuối ngày mai."
+        }
+      ],
+      "meeting_date": "2026-05-21",
+      "title": "Product Sync - AI Meeting Assistant"
+    }
+  }
