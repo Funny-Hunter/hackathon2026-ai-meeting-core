@@ -2,6 +2,10 @@
 
 Backend demo for an AI meeting analysis assistant. The application imports JSON transcripts from the `data/` directory, stores the meeting structure in Neo4j, and lets users ask questions about imported meetings through a simple web UI.
 
+![alt text](data/images/graph_rag.png)
+
+![alt text](data/images/insights_analyze.png)
+
 ## Key Features
 
 - Import meeting transcripts from local JSON files.
@@ -21,6 +25,7 @@ Backend demo for an AI meeting analysis assistant. The application imports JSON 
 - Neo4j
 - Qdrant
 - Docker Compose
+- uv
 
 ## Project Structure
 
@@ -34,7 +39,8 @@ Backend demo for an AI meeting analysis assistant. The application imports JSON 
 │   └── main.py               # FastAPI app + UI HTML
 ├── data/                     # Sample transcript JSON files
 ├── docker-compose.yml        # Local Neo4j + Qdrant services
-├── requirement.txt           # Python dependencies
+├── pyproject.toml            # Project metadata and dependencies
+├── uv.lock                   # Locked dependency versions
 └── .env.example              # Example environment variables
 ```
 
@@ -42,16 +48,15 @@ Backend demo for an AI meeting analysis assistant. The application imports JSON 
 
 - Docker and Docker Compose
 - Python 3.11 or later
+- uv
 - OpenAI API key
 
 ## Setup
 
-1. Create a virtual environment and install dependencies:
+1. Install dependencies:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirement.txt
+uv sync
 ```
 
 2. Create the local environment file:
@@ -87,7 +92,7 @@ docker compose up -d
 2. Run FastAPI:
 
 ```bash
-uvicorn app.main:app --reload
+uv run uvicorn app.main:app --reload
 ```
 
 3. Open the application:
@@ -256,8 +261,8 @@ docker compose up -d
 docker compose down
 
 # Run the development app
-uvicorn app.main:app --reload
+uv run uvicorn app.main:app --reload
 
 # Run tests if test cases are added
-pytest
+uv run pytest
 ```
