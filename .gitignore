@@ -1,0 +1,44 @@
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+!.env*.example
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/
+
+# Logs and runtime files
+*.log
+*.pid
+.uvicorn/
+
+# Local database/runtime volumes
+qdrant_data/
+neo4j_data/
+neo4j_logs/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
