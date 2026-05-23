@@ -10,6 +10,7 @@ from langgraph.graph import StateGraph, END
 from app.core.llm import get_llm
 from app.models.transcript import ChatResponse, SourceChunk
 from app.services import neo4j_service, qdrant_service
+from langgraph.types import Send
 
 logger = logging.getLogger(__name__)
 
@@ -276,6 +277,8 @@ async def vector_rag_node(state: ChatState) -> dict:
     Node B.1: Retrieve semantic context from Qdrant
     Part of the hybrid RAG pipeline for content questions
     """
+    logger.info("VECTOR_RAG START - %s", datetime.now().isoformat())
+
     logger.info(
         "CHAT QDRANT query_start meeting_id=%s question=%r",
         state["meeting_id"],
@@ -325,7 +328,8 @@ async def vector_rag_node(state: ChatState) -> dict:
         )
 
     context = "\n".join(context_lines) if context_lines else "No relevant Qdrant content found."
-    
+    logger.info("VECTOR_RAG END - %s", datetime.now().isoformat())
+
     return {
         "vector_context": context,
         "sources": sources,
@@ -336,6 +340,8 @@ async def graph_rag_node(state: ChatState) -> dict:
     """
     Node B.2: Extract entities and retrieve from Neo4j graph
     """
+    logger.info("GRAPH_RAG START - %s", datetime.now().isoformat())
+
     logger.info(
         "CHAT NEO4J entity_extract_start meeting_id=%s question=%r",
         state["meeting_id"],
@@ -410,6 +416,7 @@ async def graph_rag_node(state: ChatState) -> dict:
         len(lines),
         len(graph_context),
     )
+    logger.info("GRAPH_RAG END - %s", datetime.now().isoformat())
 
     return {
         "graph_context": graph_context
@@ -549,33 +556,23 @@ def build_chat_graph():
 
     # CONDITIONAL ROUTING 
     # Routes based on intent determined in plan_intent_node
-    def route_based_on_intent(state: ChatState) -> Literal["database_answer", "vector_rag", "speaker_analytics"]:
-        """Router function: decide which branch to take"""
+    def route_based_on_intent(state: ChatState):
         intent = state.get("intent")
-
         if intent == "meeting_database_lookup":
             return "database_answer"
-
         elif intent == "speaker_analytics":
             return "speaker_analytics"
-
-        return "vector_rag"
+        return [Send("vector_rag", state), Send("graph_rag", state)]
 
     builder.add_conditional_edges(
         "plan_intent",
         route_based_on_intent,
-        {
-            "database_answer": "database_answer",
-            "speaker_analytics": "speaker_analytics",
-            "vector_rag": "vector_rag",
-        }
+        ["database_answer", "speaker_analytics", "vector_rag", "graph_rag"]
     )
 
-    # Database lookup branch ends here
     builder.add_edge("database_answer", END)
     builder.add_edge("speaker_analytics", END)
-    # Content question branch (RAG pipeline)
-    builder.add_edge("vector_rag", "graph_rag")
+    builder.add_edge("vector_rag", "synthesize")
     builder.add_edge("graph_rag", "synthesize")
     builder.add_edge("synthesize", "generate_answer")
     builder.add_edge("generate_answer", END)
