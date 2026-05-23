@@ -50,7 +50,7 @@ async def invoke_database_lookup_planner(question: str, current_date: str) -> di
     parser = JsonOutputParser()
 
     prompt = ChatPromptTemplate.from_template("""
-    Classify whether the user is asking about meeting database metadata or meeting content.
+    Classify whether the user's question is about meeting database metadata, meeting content, or speaker analytics.
 
     Current date in Asia/Ho_Chi_Minh: {current_date}
     Question: {question}
@@ -61,40 +61,36 @@ async def invoke_database_lookup_planner(question: str, current_date: str) -> di
 
     Schema:
     {{
-    "intent": "meeting_database_lookup" | "meeting_content"| "speaker_analytics",
+    "intent": "meeting_database_lookup" | "meeting_content" | "speaker_analytics",
     "operation": "list" | "count" | "answer",
     "start_date": "YYYY-MM-DD or null",
     "end_date": "YYYY-MM-DD or null"
     }}
 
-    Use:
+    Intent rules:
 
     - "meeting_database_lookup"
-    for listing/counting meetings
+    Questions about listing, searching, or counting meetings.
 
     - "speaker_analytics"
-    for questions about:
-        * how many speakers
-        * who attended
-        * number of participants
-        * who spoke most
-        * speaker statistics
+    Questions about participants or speaker-level statistics, such as:
+    * number of speakers
+    * who attended
+    * participant count
+    * speaking activity statistics
+    * speaker contribution comparison
 
     - "meeting_content"
-    for semantic questions about what was discussed
-    Example:
-    "AI Meeting Assistant có bao người?" → speaker_analytics
+    Questions asking about discussion content, statements, decisions, opinions, topics, summaries, or semantic meaning of the meeting.
 
-    "Ai tham gia cuộc họp?" → speaker_analytics
+    Resolve relative dates only when explicitly mentioned:
+    - today
+    - yesterday
+    - this week
+    - this month
 
-    "Nam nói gì về budget?" → meeting_content
     Return JSON only.
     Do not explain.
-    Resolve relative dates only when explicitly mentioned:
-    - hôm nay
-    - hôm qua
-    - tuần này
-    - tháng này
     """)
 
     chain = prompt | llm | parser
@@ -400,7 +396,7 @@ async def graph_rag_node(state: ChatState) -> dict:
 
     else:
         query_name = "query_meeting_summary_context"
-        graph_context = neo4j_service.query_meeting_summary_context(
+        graph_context = neo4j_service.query_recent_segments_text(
             state["meeting_id"],
             limit=20,
         )
