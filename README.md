@@ -6,6 +6,10 @@ Backend demo for an AI meeting analysis assistant. The application imports JSON 
 
 ![alt text](data/images/insights_analyze.png)
 
+## Chat Pipeline Architecture
+
+![alt text](data/images/chat_langgraph_flow.svg)
+
 ## Key Features
 
 - Import meeting transcripts from local JSON files.
