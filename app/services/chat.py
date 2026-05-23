@@ -1,5 +1,6 @@
 import logging
-from typing import TypedDict, Literal
+import json
+from typing import TypedDict
 
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage, BaseMessage
@@ -8,11 +9,10 @@ from langgraph.graph import StateGraph, END
 
 from app.core.llm import get_llm
 from app.models.transcript import ChatResponse, SourceChunk
-from app.services import neo4j_service
+from app.services import neo4j_service, qdrant_service
 
-# Embedding/Graphiti paths are paused for Neo4j-only mode.
-# Uncomment these imports and the original node bodies when API keys are available.
-# from app.services import graphiti_service, qdrant_service
+# Graphiti path is paused for Neo4j-only mode.
+# from app.services import graphiti_service
 
 logger = logging.getLogger(__name__)
 
@@ -22,79 +22,97 @@ class ChatState(TypedDict):
     question: str
     chat_history: list[BaseMessage]
 
-    # Routing
-    route: Literal["vector_rag", "graph_rag", "hybrid"]
-
-    # Retrieved contexts
     vector_context: str
     graph_context: str
     final_context: str
-
-    # Sources returned to the client
     sources: list[dict]
-
-    # Final answer
     answer: str
 
 
-# ── Router node───────────────────────────────────────────────────────────────
-
-_ROUTER_PROMPT = ChatPromptTemplate.from_messages([
-    ("system", """You are the router for a meeting RAG system.
-Classify the question into exactly one of these three categories:
-
-- "vector_rag": questions about specific content, quoted statements, or discussion details
-  Examples: "What did they say about the deadline?", "Who proposed solution X?"
-
-- "graph_rag": questions about relationships, who interacted with whom, or each person's topics
-  Examples: "Did Speaker A and B agree?", "Who mentioned the budget?", "What is the relationship between A and C?"
-
-- "hybrid": complex questions that require both retrieval methods
-  Examples: "Summarize each person's view on issue X", "Compare A and B's opinions about the deadline"
-
-Return only one of these three values: vector_rag, graph_rag, hybrid"""),
-    ("human", "Question: {question}"),
-])
-
-
-async def router_node(state: ChatState) -> dict:
+async def extract_entities_from_question(question: str) -> dict:
+    """Extract topic and speakers from question"""
     llm = get_llm()
-    chain = _ROUTER_PROMPT | llm | StrOutputParser()
-    raw = await chain.ainvoke({"question": state["question"]})
-    route = raw.strip().lower()
-    if route not in ("vector_rag", "graph_rag", "hybrid"):
-        route = "vector_rag"  # fallback
-    logger.info(f"Routed to: {route}")
-    return {"route": route}
 
+    prompt = ChatPromptTemplate.from_template("""
+    Extract entities from question. Return JSON only.
+
+    Question: {question}
+
+    Return:
+    {{
+        "topic": "topic or null",
+        "speakers": ["speaker names"],
+        "question_type": "comparison|relationship|opinion|fact"
+    }}
+    """)
+
+    chain = prompt | llm | StrOutputParser()
+    response = await chain.ainvoke({"question": question})
+
+    try:
+        # Parse JSON
+        raw = response.strip()
+        if raw.startswith("```"):
+            raw = raw.split("```")[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+        entities = json.loads(raw.strip())
+        return entities
+    except Exception as exc:
+        logger.warning("Entity extraction failed: %s", exc)
+        return {"topic": None, "speakers": [], "question_type": "fact"}
 
 
 async def vector_rag_node(state: ChatState) -> dict:
-    # Qdrant embedding path, paused while running Neo4j-only mode:
-    # retriever = qdrant_service.get_retriever(meeting_id=state["meeting_id"], k=5)
-    # docs = await retriever.ainvoke(state["question"])
-    #
-    # sources = []
-    # context_lines = []
-    # for doc in docs:
-    #     meta = doc.metadata
-    #     sources.append({
-    #         "speaker": meta.get("speaker", ""),
-    #         "timestamp": meta.get("timestamp", ""),
-    #         "text": meta.get("text", ""),
-    #         "score": meta.get("score", 0.0),
-    #     })
-    #     context_lines.append(
-    #         f"[{meta.get('timestamp', '')}] {meta.get('speaker', '')}: {meta.get('text', '')}"
-    #     )
+    """Retrieve semantic context from Qdrant for every user question."""
+    logger.info(
+        "CHAT QDRANT query_start meeting_id=%s question=%r",
+        state["meeting_id"],
+        state["question"],
+    )
+    docs_with_scores = await qdrant_service.search_documents_with_scores(
+        meeting_id=state["meeting_id"],
+        query=state["question"],
+        k=5,
+    )
+    logger.info(
+        "CHAT QDRANT query_result meeting_id=%s chunks=%s",
+        state["meeting_id"],
+        len(docs_with_scores),
+    )
 
-    segments = neo4j_service.query_all_segments(state["meeting_id"])
-    sources = segments[:5]
-    context_lines = [
-        f"[{segment['timestamp']}] {segment['speaker']}: {segment['text']}"
-        for segment in segments
-    ]
-    context = "\n".join(context_lines) if context_lines else "No relevant content found."
+    if not docs_with_scores:
+        logger.info(
+            "CHAT QDRANT no_chunks meeting_id=%s question=%r",
+            state["meeting_id"],
+            state["question"],
+        )
+
+    sources = []
+    context_lines = []
+    for index, (doc, score) in enumerate(docs_with_scores, start=1):
+        meta = doc.metadata
+        text = meta.get("text") or doc.page_content
+        logger.info(
+            "CHAT QDRANT chunk meeting_id=%s index=%s speaker=%s timestamp=%s score=%s text=%r",
+            state["meeting_id"],
+            index,
+            meta.get("speaker", ""),
+            meta.get("timestamp", ""),
+            score,
+            text,
+        )
+        sources.append({
+            "speaker": meta.get("speaker", ""),
+            "timestamp": meta.get("timestamp", ""),
+            "text": text,
+            "score": score,
+        })
+        context_lines.append(
+            f"[{meta.get('timestamp', '')}] {meta.get('speaker', '')}: {text}"
+        )
+
+    context = "\n".join(context_lines) if context_lines else "No relevant Qdrant content found."
     return {
         "vector_context": context,
         "sources": sources,
@@ -102,41 +120,74 @@ async def vector_rag_node(state: ChatState) -> dict:
 
 
 async def graph_rag_node(state: ChatState) -> dict:
-    # Graphiti path, paused for Neo4j-only mode:
-    # try:
-    #     graph_context = await graphiti_service.search_graphiti(
-    #         state["meeting_id"],
-    #         state["question"],
-    #     )
-    # except Exception as exc:
-    #     logger.warning("Graphiti search failed: %s", exc)
-    #     graph_context = "Graph context is unavailable."
+    """Extract entities from the question, then retrieve matching Neo4j context."""
+    logger.info(
+        "CHAT NEO4J entity_extract_start meeting_id=%s question=%r",
+        state["meeting_id"],
+        state["question"],
+    )
+    entities = await extract_entities_from_question(state["question"])
+    topic = entities.get("topic")
+    speakers = entities.get("speakers", [])
 
-    graph_context = neo4j_service.query_all_segments_text(state["meeting_id"])
+    logger.info(
+        "CHAT NEO4J entities meeting_id=%s topic=%s speakers=%s question_type=%s",
+        state["meeting_id"],
+        topic,
+        speakers,
+        entities.get("question_type"),
+    )
+
+    if topic and len(speakers) >= 2:
+        query_name = "query_speaker_interaction_on_topic"
+        graph_context = neo4j_service.query_speaker_interaction_on_topic(
+            meeting_id=state["meeting_id"],
+            speaker_a=speakers[0],
+            speaker_b=speakers[1],
+            topic=topic,
+        )
+    elif topic:
+        query_name = "query_segments_by_topic"
+        graph_context = neo4j_service.query_segments_by_topic(
+            meeting_id=state["meeting_id"],
+            topic=topic,
+        )
+    else:
+        query_name = "query_all_segments_text"
+        graph_context = neo4j_service.query_all_segments_text(
+            meeting_id=state["meeting_id"]
+        )
+
+    lines = graph_context.splitlines()
+    logger.info(
+        "CHAT NEO4J query_result meeting_id=%s query=%s lines=%s chars=%s",
+        state["meeting_id"],
+        query_name,
+        len(lines),
+        len(graph_context),
+    )
+    for index, line in enumerate(lines, start=1):
+        logger.info(
+            "CHAT NEO4J context_line meeting_id=%s index=%s text=%r",
+            state["meeting_id"],
+            index,
+            line,
+        )
+
     return {"graph_context": graph_context}
 
 
 
 async def synthesize_node(state: ChatState) -> dict:
-    """Merge vector + graph context for the hybrid route."""
+    """Merge Qdrant semantic context and Neo4j entity context."""
     parts = []
     if state.get("vector_context"):
-        parts.append("=== Retrieved Content (Vector RAG) ===\n" + state["vector_context"])
+        parts.append("=== Qdrant Semantic Context ===\n" + state["vector_context"])
     if state.get("graph_context"):
-        parts.append("=== Relationship Information (Graph RAG) ===\n" + state["graph_context"])
+        parts.append("=== Neo4j Entity Context ===\n" + state["graph_context"])
 
     final_context = "\n\n".join(parts) if parts else "No context available."
     return {"final_context": final_context}
-
-
-
-async def finalize_vector_node(state: ChatState) -> dict:
-    return {"final_context": state.get("vector_context", "")}
-
-
-async def finalize_graph_node(state: ChatState) -> dict:
-    return {"final_context": state.get("graph_context", "")}
-
 
 
 _ANSWER_PROMPT = ChatPromptTemplate.from_messages([
@@ -165,68 +216,18 @@ async def answer_node(state: ChatState) -> dict:
     return {"answer": answer}
 
 
-def route_after_router(state: ChatState) -> str:
-    route = state.get("route", "vector_rag")
-    if route == "hybrid":
-        return "both"
-    return route
-
-
-def route_after_retrieval(state: ChatState) -> str:
-    """After retrieval, route to synthesize or finalize."""
-    return state.get("route", "vector_rag")
-
-
-
 def build_chat_graph():
     builder = StateGraph(ChatState)
 
-    # Add nodes
-    builder.add_node("router", router_node)
     builder.add_node("vector_rag", vector_rag_node)
     builder.add_node("graph_rag", graph_rag_node)
     builder.add_node("synthesize", synthesize_node)
-    builder.add_node("finalize_vector", finalize_vector_node)
-    builder.add_node("finalize_graph", finalize_graph_node)
     builder.add_node("generate_answer", answer_node)
 
-    # Entry
-    builder.set_entry_point("router")
-
-    # Router → retrieval nodes
-    builder.add_conditional_edges(
-        "router",
-        route_after_router,
-        {
-            "vector_rag": "vector_rag",
-            "graph_rag": "graph_rag",
-            "both": "vector_rag",  # hybrid: run vector first
-        },
-    )
-
-    # Hybrid: sau vector_rag → tiếp tục chạy graph_rag
-    # Non-hybrid: sau retrieval → finalize
-    builder.add_conditional_edges(
-        "vector_rag",
-        lambda s: "synthesize" if s.get("route") == "hybrid" else "finalize_vector",
-        {
-            "synthesize": "graph_rag",   
-            "finalize_vector": "finalize_vector",
-        },
-    )
-
-    builder.add_conditional_edges(
-        "graph_rag",
-        lambda s: "synthesize" if s.get("route") in ("hybrid", "graph_rag") else "finalize_graph",
-        {
-            "synthesize": "synthesize",
-            "finalize_graph": "finalize_graph",
-        },
-    )
-
+    builder.set_entry_point("vector_rag")
+    builder.add_edge("vector_rag", "graph_rag")
+    builder.add_edge("graph_rag", "synthesize")
     builder.add_edge("synthesize", "generate_answer")
-    builder.add_edge("finalize_vector", "generate_answer")
-    builder.add_edge("finalize_graph", "generate_answer")
     builder.add_edge("generate_answer", END)
 
     return builder.compile()
@@ -266,7 +267,6 @@ async def chat_with_meeting(
         "meeting_id": meeting_id,
         "question": question,
         "chat_history": lc_history,
-        "route": "vector_rag",
         "vector_context": "",
         "graph_context": "",
         "final_context": "",
@@ -289,5 +289,5 @@ async def chat_with_meeting(
     return ChatResponse(
         answer=final_state.get("answer", ""),
         sources=sources,
-        route_used=final_state.get("route", "vector_rag"),
+        route_used="hybrid",
     )

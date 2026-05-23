@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
+from app.core.logging import configure_app_logging
 from app.services.chat import chat_with_meeting
 from app.services.import_service import (
     get_imported_meetings,
@@ -13,6 +14,7 @@ from app.services.import_service import (
 )
 
 
+configure_app_logging()
 app = FastAPI(title="Meeting AI Import Demo")
 
 

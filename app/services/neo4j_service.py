@@ -394,3 +394,86 @@ def query_all_segments(meeting_id: str) -> list[dict]:
         }
         for row in rows
     ]
+
+def query_speaker_interaction_on_topic(
+    meeting_id: str,
+    speaker_a: str,
+    speaker_b: str,
+    topic: str
+) -> str:
+    """Query specific speakers about specific topic"""
+    driver = get_neo4j_driver()
+    with driver.session() as session:
+        result = session.run(
+            """
+            MATCH (sp1:Speaker {name: $speaker_a, meeting_id: $meeting_id})
+            MATCH (sp2:Speaker {name: $speaker_b, meeting_id: $meeting_id})
+            MATCH (sp1)-[:MENTIONED]->(t:Topic)
+            WHERE toLower(t.name) CONTAINS toLower($topic)
+            MATCH (sp2)-[:MENTIONED]->(t)
+            OPTIONAL MATCH (seg1:Segment)-[:SPOKEN_BY]->(sp1)
+            OPTIONAL MATCH (seg2:Segment)-[:SPOKEN_BY]->(sp2)
+            RETURN
+                seg1.timestamp AS timestamp_a,
+                seg1.speaker AS speaker_a_name,
+                seg1.text AS text_a,
+                seg2.timestamp AS timestamp_b,
+                seg2.speaker AS speaker_b_name,
+                seg2.text AS text_b
+            ORDER BY seg1.index, seg2.index
+            """,
+            meeting_id=meeting_id,
+            speaker_a=speaker_a,
+            speaker_b=speaker_b,
+            topic=topic,
+        )
+        rows = list(result)
+
+    if not rows:
+        return f"No interaction found between {speaker_a} and {speaker_b} on {topic}"
+
+    formatted = []
+    seen = set()
+    for row in rows:
+        for timestamp_key, speaker_key, text_key in (
+            ("timestamp_a", "speaker_a_name", "text_a"),
+            ("timestamp_b", "speaker_b_name", "text_b"),
+        ):
+            timestamp = row[timestamp_key]
+            speaker = row[speaker_key]
+            text = row[text_key]
+            key = (timestamp, speaker, text)
+            if timestamp and key not in seen:
+                seen.add(key)
+                formatted.append(f"[{timestamp}] {speaker}: {text}")
+
+    return "\n".join(formatted)
+
+def query_segments_by_topic(meeting_id: str, topic: str) -> str:
+    """Get all segments mentioning a topic"""
+    driver = get_neo4j_driver()
+
+    with driver.session() as session:
+        result = session.run(
+            """
+            MATCH (sp:Speaker {meeting_id: $meeting_id})-[:MENTIONED]->(t:Topic)
+            WHERE toLower(t.name) CONTAINS toLower($topic)
+            OPTIONAL MATCH (seg:Segment)-[:SPOKEN_BY]->(sp)
+            RETURN
+                seg.timestamp AS timestamp,
+                seg.speaker AS speaker,
+                seg.text AS text
+            ORDER BY seg.index
+            """,
+            meeting_id=meeting_id,
+            topic=topic,
+        )
+        rows = list(result)
+
+    if not rows:
+        return f"No one mentioned '{topic}'"
+
+    return "\n".join(
+        f"[{row['timestamp']}] {row['speaker']}: {row['text']}"
+        for row in rows
+    )

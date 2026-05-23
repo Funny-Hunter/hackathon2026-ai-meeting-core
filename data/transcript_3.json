@@ -1,0 +1,74 @@
+{
+    "transcript": {
+      "meeting_id": "meeting-ai-rag-review",
+      "title": "Meeting AI RAG Pipeline Review",
+      "meeting_date": "2026-05-23",
+      "segments": [
+        {
+          "speaker": "Huy",
+          "timestamp": "00:00",
+          "text": "Hôm nay mình review pipeline ingest transcript cho hệ thống Meeting AI. Mục tiêu là đảm bảo transcript sau khi parse sẽ chunk đúng để semantic search ổn định."
+        },
+        {
+          "speaker": "Huy",
+          "timestamp": "00:21",
+          "text": "Hiện tại phần merge consecutive turns đang dùng window bằng ba nên có khả năng cắt mất context nếu một speaker nói liên tục quá lâu."
+        },
+        {
+          "speaker": "Huy",
+          "timestamp": "00:47",
+          "text": "Mình nghĩ nên merge full speaker turn rồi split lại bằng recursive chunking có overlap để retrieval tốt hơn."
+        },
+        {
+          "speaker": "Mai",
+          "timestamp": "01:15",
+          "text": "Em đã test thử với transcript dài khoảng mười lăm phút. Nếu giữ window bằng ba thì nhiều chunk bị cụt ý giữa phần giải thích technical."
+        },
+        {
+          "speaker": "Mai",
+          "timestamp": "01:42",
+          "text": "Khi query semantic search kiểu hỏi về vector indexing strategy thì retriever đôi lúc chỉ trả nửa context nên answer khá lệch."
+        },
+        {
+          "speaker": "Khoa",
+          "timestamp": "02:11",
+          "text": "Về phía Qdrant thì collection đang chạy ổn. Insert document thành công nhưng hiện tại retriever vẫn dùng top k similarity bình thường chưa có score threshold."
+        },
+        {
+          "speaker": "Khoa",
+          "timestamp": "02:39",
+          "text": "Nếu query lạc đề ví dụ hỏi deployment infra thì nó vẫn trả chunk gần nghĩa nhất dù thực tế không liên quan."
+        },
+        {
+          "speaker": "Huy",
+          "timestamp": "03:04",
+          "text": "Chuẩn. Mình cần đổi sang similarity score threshold khoảng không phẩy bảy lăm để tránh hallucination retrieval."
+        },
+        {
+          "speaker": "Huy",
+          "timestamp": "03:28",
+          "text": "Nếu threshold không ra kết quả thì fallback về top k similarity để vẫn có context trả lời."
+        },
+        {
+          "speaker": "Mai",
+          "timestamp": "04:01",
+          "text": "Ngoài ra metadata nên giữ meeting id, timestamp start, timestamp end, split index và speaker để trace chunk dễ hơn lúc debug."
+        },
+        {
+          "speaker": "Mai",
+          "timestamp": "04:31",
+          "text": "Phần overlap em đang để hai trăm ký tự với chunk size một nghìn hai trăm, kết quả khá ổn."
+        },
+        {
+          "speaker": "Khoa",
+          "timestamp": "05:02",
+          "text": "Dashboard debug cũng nên có endpoint xem trực tiếp chunk nào đã index vào vector store để verify splitter hoạt động đúng."
+        },
+        {
+          "speaker": "Huy",
+          "timestamp": "05:35",
+          "text": "Chốt lại: bỏ window cố định, merge full turn, recursive split, overlap mười lăm phần trăm, thêm threshold retrieval và làm endpoint inspect chunks."
+        }
+      ]
+    }
+  }

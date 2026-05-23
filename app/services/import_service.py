@@ -10,10 +10,7 @@ from urllib.error import HTTPError
 from app.core.config import get_settings
 from app.models.transcript import ChatResponse, MeetingTranscript, SourceChunk
 from app.services.neo4j_service import ingest_transcript_to_graph
-
-# Qdrant embedding ingest is paused for Neo4j-only mode.
-# Uncomment this import and the call in import_transcript_file() when an embedding key is available.
-# from app.services.qdrant_service import ingest_transcript
+from app.services.qdrant_service import ingest_transcript
 
 # Switch graph backend here:
 # from app.services.graphiti_service import ingest_transcript_to_graphiti
@@ -54,8 +51,7 @@ def load_transcript(filename: str) -> MeetingTranscript:
 
 async def import_transcript_file(filename: str) -> dict:
     transcript = load_transcript(filename)
-    # qdrant_points = await ingest_transcript(transcript)
-    qdrant_points = 0
+    qdrant_points = await ingest_transcript(transcript)
     graph_counts = await ingest_transcript_to_graph(transcript)
     if isinstance(graph_counts, int):
         graph_counts = {"nodes": graph_counts, "relationships": 0}
