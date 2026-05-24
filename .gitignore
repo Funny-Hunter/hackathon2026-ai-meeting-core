@@ -25,6 +25,10 @@ build/
 dist/
 *.egg-info/
 
+# Local planning and generated test artifacts
+docs/
+tests/
+
 # Logs and runtime files
 *.log
 *.pid

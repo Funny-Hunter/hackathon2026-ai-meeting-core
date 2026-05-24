@@ -1,14 +1,21 @@
 import logging
+import json
 from datetime import datetime
 from typing import TypedDict, Literal
 from zoneinfo import ZoneInfo
 
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage, BaseMessage
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from langgraph.graph import StateGraph, END
 from app.core.llm import get_llm
 from app.models.transcript import ChatResponse, SourceChunk
+from app.services.prompt import (
+    ANSWER_PROMPT,
+    DATABASE_ANSWER_PROMPT,
+    DATABASE_LOOKUP_PLANNER_PROMPT,
+    ENTITY_EXTRACTION_PROMPT,
+    SPEAKER_ANALYTICS_PROMPT,
+)
 from app.services import neo4j_service, qdrant_service
 from langgraph.types import Send
 
@@ -50,51 +57,7 @@ async def invoke_database_lookup_planner(question: str, current_date: str) -> di
     llm = get_llm()
     parser = JsonOutputParser()
 
-    prompt = ChatPromptTemplate.from_template("""
-    Classify whether the user's question is about meeting database metadata, meeting content, or speaker analytics.
-
-    Current date in Asia/Ho_Chi_Minh: {current_date}
-    Question: {question}
-
-    Return JSON only.
-
-    {format_instructions}
-
-    Schema:
-    {{
-    "intent": "meeting_database_lookup" | "meeting_content" | "speaker_analytics",
-    "operation": "list" | "count" | "answer",
-    "start_date": "YYYY-MM-DD or null",
-    "end_date": "YYYY-MM-DD or null"
-    }}
-
-    Intent rules:
-
-    - "meeting_database_lookup"
-    Questions about listing, searching, or counting meetings.
-
-    - "speaker_analytics"
-    Questions about participants or speaker-level statistics, such as:
-    * number of speakers
-    * who attended
-    * participant count
-    * speaking activity statistics
-    * speaker contribution comparison
-
-    - "meeting_content"
-    Questions asking about discussion content, statements, decisions, opinions, topics, summaries, or semantic meaning of the meeting.
-
-    Resolve relative dates only when explicitly mentioned:
-    - today
-    - yesterday
-    - this week
-    - this month
-
-    Return JSON only.
-    Do not explain.
-    """)
-
-    chain = prompt | llm | parser
+    chain = DATABASE_LOOKUP_PLANNER_PROMPT | llm | parser
 
     result = await chain.ainvoke({
         "question": question,
@@ -158,6 +121,7 @@ async def plan_intent_node(state: ChatState) -> dict:
 
 # BRANCH A: DATABASE LOOKUP PATH
 
+
 def _format_date_range(start_date: str | None, end_date: str | None) -> str:
     """Format date range for Vietnamese message"""
     if start_date and end_date:
@@ -191,21 +155,17 @@ async def database_answer_node(state: ChatState) -> dict:
         state.get("start_date"), 
         state.get("end_date")
     )
-    
-    if not meetings:
-        answer = f"Không tìm thấy cuộc họp nào trong cơ sở dữ liệu{date_range}."
-    elif state.get("operation") == "count":
-        answer = f"Có {len(meetings)} cuộc họp trong cơ sở dữ liệu{date_range}."
-    else:
-        lines = [f"Hiện tại cơ sở dữ liệu có các cuộc họp{date_range}:"]
-        for index, meeting in enumerate(meetings, start=1):
-            date = meeting.get("meeting_date") or "không rõ ngày"
-            title = meeting.get("title") or meeting["meeting_id"]
-            segments = meeting.get("segments", 0)
-            lines.append(
-                f"{index}. {title} (`{meeting['meeting_id']}`) - {date}, {segments} segments"
-            )
-        answer = "\n".join(lines)
+
+    llm = get_llm()
+    chain = DATABASE_ANSWER_PROMPT | llm | StrOutputParser()
+    answer = await chain.ainvoke({
+        "question": state["question"],
+        "operation": state.get("operation") or "answer",
+        "date_range": date_range or "không giới hạn",
+        "meeting_count": len(meetings),
+        "meetings_json": json.dumps(meetings, ensure_ascii=False, indent=2),
+        "chat_history": state.get("chat_history", []),
+    })
 
     logger.info(
         "CHAT DATABASE query_result count=%s operation=%s",
@@ -230,30 +190,7 @@ async def extract_entities_from_question(question: str) -> dict:
     llm = get_llm()
     parser = JsonOutputParser()
 
-    prompt = ChatPromptTemplate.from_template("""
-            Extract entities from question.
-
-            Question: {question}
-
-            {format_instructions}
-
-            Return:
-            {{
-                "topic": "topic or null",
-                "speakers": ["speaker names"],
-                "question_type": "speaker_statement|topic_discussion|speaker_topic|speaker_pair_topic|speaker_relationship|meeting_summary|recent_context"
-            }}
-            Rules:
-
-            - "What did [speaker] say?" → speaker_statement
-            - "How was [topic] discussed?" → topic_discussion
-            - "What did [speaker] say about [topic]?" → speaker_topic
-            - "What did [speaker1] and [speaker2] say about [topic]?" → speaker_pair_topic
-            - "What did [speaker1] and [speaker2] discuss?" → speaker_relationship
-            - "What was the meeting about?" → meeting_summary
-            - Unclear / ambiguous query → recent_context
-            """)
-    chain = prompt | llm | parser
+    chain = ENTITY_EXTRACTION_PROMPT | llm | parser
 
     try:
         result = await chain.ainvoke({
@@ -445,19 +382,6 @@ async def synthesize_node(state: ChatState) -> dict:
     return {"final_context": final_context}
 
 
-_ANSWER_PROMPT = ChatPromptTemplate.from_messages([
-    ("system", """You are an AI assistant for meeting analysis.
-Answer the question accurately and completely using the provided context and chat history.
-If the context is not sufficient to answer, say so clearly.
-Respond in Vietnamese with a clear, structured answer."""),
-    MessagesPlaceholder(variable_name="chat_history"),
-    ("human", """Meeting context:
-{context}
-
-Question: {question}"""),
-])
-
-
 async def generate_answer_node(state: ChatState) -> dict:
     """
     Node B.4: Generate final answer using LLM
@@ -469,7 +393,7 @@ async def generate_answer_node(state: ChatState) -> dict:
     )
     
     llm = get_llm()
-    chain = _ANSWER_PROMPT | llm | StrOutputParser()
+    chain = ANSWER_PROMPT | llm | StrOutputParser()
 
     answer = await chain.ainvoke({
         "context": state.get("final_context", ""),
@@ -510,13 +434,15 @@ async def speaker_analytics_node(state: ChatState) -> dict:
 
     speakers = row["speakers"] if row else []
 
-    if not speakers:
-        answer = "Không tìm thấy speaker nào trong cuộc họp này."
-    else:
-        answer = (
-            f"Cuộc họp có {len(speakers)} người tham gia:\n"
-            + "\n".join(f"- {s}" for s in speakers)
-        )
+    llm = get_llm()
+    chain = SPEAKER_ANALYTICS_PROMPT | llm | StrOutputParser()
+    answer = await chain.ainvoke({
+        "question": state["question"],
+        "meeting_id": state["meeting_id"],
+        "speaker_count": len(speakers),
+        "speakers_json": json.dumps(speakers, ensure_ascii=False, indent=2),
+        "chat_history": state.get("chat_history", []),
+    })
 
     return {
         "answer": answer,
