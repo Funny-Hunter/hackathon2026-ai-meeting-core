@@ -62,7 +62,7 @@ class SourceChunk(BaseModel):
 class ChatResponse(BaseModel):
     answer: str
     sources: list[SourceChunk] = []
-    route_used: str = Field(..., description="'vector_rag' or 'graph_rag'")
+    route_used: str = Field(..., description="'hybrid', 'vector_rag', or 'graph_rag'")
 
 
 

@@ -1,20 +1,25 @@
 # Hackathon 2026 AI Meeting Core
 
-Backend demo for an AI meeting analysis assistant. The application imports JSON transcripts from the `data/` directory, stores the meeting structure in Neo4j, and lets users ask questions about imported meetings through a simple web UI.
+Backend demo for an AI meeting analysis assistant. The application imports JSON transcripts from the `data/` directory, indexes transcript chunks in Qdrant, stores the meeting structure in Neo4j, and lets users ask questions about imported meetings through a simple web UI.
 
 ![alt text](data/images/graph_rag.png)
 
 ![alt text](data/images/insights_analyze.png)
 
+## Chat Pipeline Architecture
+
+![alt text](data/images/chat_langgraph_flow.svg)
+
 ## Key Features
 
 - Import meeting transcripts from local JSON files.
+- Index transcript chunks into Qdrant with OpenAI embeddings for semantic retrieval.
 - Store meetings, speakers, segments, topics, and interaction relationships in Neo4j.
 - Ask questions about imported meetings.
-- Route RAG requests with LangGraph: `vector_rag`, `graph_rag`, or `hybrid`.
+- Always answer with a hybrid RAG flow: Qdrant semantic context plus Neo4j entity/graph context.
+- Log retrieved Qdrant chunks and Neo4j context lines for backend debugging.
 - Serve a single-page web UI at `/`.
-- Include sample data in `data/transcript_1.json` and `data/transcript_2.json`.
-- Include Qdrant service and embedding code, although Qdrant ingestion is currently paused for Neo4j-only mode.
+- Include sample data in `data/transcript_1.json`, `data/transcript_2.json`, and `data/transcript_3.json`.
 
 ## Tech Stack
 
@@ -32,7 +37,7 @@ Backend demo for an AI meeting analysis assistant. The application imports JSON 
 ```text
 .
 ├── app/
-│   ├── core/                 # Configuration and OpenAI client
+│   ├── core/                 # Configuration, logging, and OpenAI client
 │   ├── models/               # Pydantic models
 │   ├── services/             # Import, chat, Neo4j, Qdrant, Graphiti
 │   ├── utils/                # Transcript formatting and metadata helpers
@@ -151,7 +156,7 @@ Example response:
 
 ### `POST /api/import`
 
-Imports a transcript into Neo4j.
+Imports a transcript into Qdrant and Neo4j.
 
 Request:
 
@@ -170,7 +175,7 @@ Example response:
   "meeting_date": "2026-05-21",
   "meeting_datetime": "2026-05-21",
   "topic_key": "product-sync-ai-meeting-assistant",
-  "qdrant_points": 0,
+  "qdrant_points": 7,
   "graph": {
     "backend": "neo4j",
     "meeting_id": "demo-product-sync",
@@ -183,7 +188,7 @@ Example response:
 
 ### `POST /api/chat`
 
-Asks a question about an imported meeting.
+Asks a question about an imported meeting. Every chat request uses hybrid retrieval: Qdrant semantic search runs first, then Neo4j graph/entity retrieval runs, then both contexts are merged and sent to the answer LLM.
 
 Request:
 
@@ -208,9 +213,44 @@ Example response:
       "score": 1.0
     }
   ],
-  "route_used": "graph_rag"
+  "route_used": "hybrid"
 }
 ```
+
+## RAG Flow
+
+The chat pipeline in `app/services/chat.py` is intentionally fixed to hybrid mode:
+
+1. Convert chat history into LangChain messages.
+2. Query Qdrant with the user question using OpenAI embeddings and `similarity_search_with_relevance_scores`.
+3. Extract entities from the user question, including topic, speakers, and question type.
+4. Query Neo4j with the extracted entities:
+   - `topic + two speakers`: speaker interaction on that topic.
+   - `topic`: segments connected to that topic.
+   - no topic: all meeting segments as fallback.
+5. Merge both sources into one prompt context:
+   - `=== Qdrant Semantic Context ===`
+   - `=== Neo4j Entity Context ===`
+6. Ask the answer LLM to respond in Vietnamese.
+
+The response `sources` field contains the Qdrant chunks returned by semantic retrieval. Neo4j context is logged on the backend and included in the final prompt context.
+
+## Debug Logs
+
+Application logs are configured in `app/core/logging.py` and enabled from `app/main.py`. When running the app with the default `LOG_LEVEL=INFO`, chat requests print backend retrieval details:
+
+```text
+CHAT QDRANT query_start meeting_id=... question='...'
+CHAT QDRANT query_result meeting_id=... chunks=...
+CHAT QDRANT chunk meeting_id=... index=... speaker=... timestamp=... score=... text='...'
+
+CHAT NEO4J entity_extract_start meeting_id=... question='...'
+CHAT NEO4J entities meeting_id=... topic=... speakers=[...] question_type=...
+CHAT NEO4J query_result meeting_id=... query=... lines=... chars=...
+CHAT NEO4J context_line meeting_id=... index=... text='...'
+```
+
+These logs are not shown in the UI; they are intended for debugging retrieval quality from the terminal running Uvicorn.
 
 ## Transcript Format
 
@@ -245,8 +285,9 @@ Main fields:
 
 ## Technical Notes
 
-- `app/services/import_service.py` currently runs in Neo4j-only mode. Because of that, `qdrant_points` returns `0`.
-- Qdrant embedding code already exists in `app/services/qdrant_service.py`. To enable it again, uncomment the import and the `ingest_transcript(transcript)` call in `import_transcript_file()`.
+- `app/services/import_service.py` imports every transcript into both Qdrant and Neo4j. `qdrant_points` is the number of chunks indexed in Qdrant.
+- `app/services/qdrant_service.py` builds overlapping speaker-turn chunks, embeds them with `OPENAI_EMBEDDING_MODEL`, and stores vectors plus metadata in Qdrant.
+- `app/services/chat.py` always uses hybrid retrieval instead of asking a router model to choose a single retrieval path.
 - Graphiti has a dedicated service in `app/services/graphiti_service.py`, but the current default path uses the direct Neo4j service.
 - Imported meetings are stored in memory through the `_IMPORTED` variable, so they are lost when the app restarts.
 - The import process calls OpenAI to extract topics per speaker, so `OPENAI_API_KEY` is required.
@@ -263,6 +304,6 @@ docker compose down
 # Run the development app
 uv run uvicorn app.main:app --reload
 
-# Run tests if test cases are added
+# Run tests
 uv run pytest
 ```
