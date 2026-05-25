@@ -1,0 +1,564 @@
+{
+  "transcript": {
+    "meeting_id": "hackathon-ai-meeting-core-planning",
+    "segments": [
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "00:04",
+        "text": "Ừ."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "00:09",
+        "text": "Ừ. Ừ. Thì bây giờ anh hay tích hợp driver, có thể là trang team nó để theo người nhá. Còn có thể là nghĩ đến cái việc tích hợp một graph driver nhá, để theo kiểu là phân tích các cái insight của họ ấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "00:31",
+        "text": "Đúng không? Thế đúng không? Ờ, ok. Thế thì bây giờ anh em xem còn cái tính năng gì được không? Mindmap à? Tính năng mindmap à?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "00:43",
+        "text": "Mà."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "01:00",
+        "text": "Ờ thì... Ờ thì tùy. Tùy anh em. Tí nữa anh em pick pick các cái đầu việc rồi sau đấy thì mình... thì mình xem... Vấn đề mindmap này là dựa dựa trên một cuộc họp hay là dựa trên toàn bộ cuộc họp ấy nhờ?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "01:19",
+        "text": "Theo em nghĩ á, nếu mà theo em nghĩ á thì em nghĩ là mình sẽ chọn những cái cuộc họp liên quan đến nhau. Cái phần này là cái mindmap hạng chó gì nhỉ? Nãy giờ sang sóng nhất là chỉ có chính một cuộc họp thôi mà đúng không Duy anh? Nhưng mà thì ý em là nhiều cuộc họp nó liên quan đến nhau ấy. Nhiều cuộc họp thì mình nghỉ sau. Còn nãy giờ thì mình đang sóng nhất là mình... em Duy thi cái bản đầu tiên thì anh em mình cứ làm trong một cuộc họp trước."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "01:44",
+        "text": "Ừ, mình cứ ra tính năng trước đi. Còn anh em bổ sung thêm các cái tính năng kia thì anh nghĩ là sau. .. ừ, mình... mình plug and play mình... mình cắm vào sau thôi."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "01:56",
+        "text": "Ok không anh em? Duy anh ơi, nãy giờ không thấy nói gì nhỉ?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "02:04",
+        "text": "Ơ nhưng mà bên Meet chị ạ? Anh chơi bên Meet thì... nói bên Discord anh không nghe đâu."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "02:14",
+        "text": "Anh đang bật cả hai bên mà. Anh nói được cả hai bên mà. Nhưng mà tại sao Duy anh... Em nói bên Meet anh Duy có nghe thấy không? Có. Ờ. Anh em tag Duy anh ở trong nhóm tag cho anh nhá."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "02:30",
+        "text": "Ủa."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "02:33",
+        "text": "Ok nhá. Thế..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "02:37",
+        "text": "Ok thế bây giờ tính năng... Và dẫn hỗ trợ sau. Này bây giờ đến... đến tính năng thứ tư là tính năng liên quan đến của Thành bảo là Jira đúng không Thành? Tính năng phân biệt chị... à theo kiểu là phân tag trên Jira đúng không? Bọn em... nếu bọn... bọn anh sau khi kích xuất xong ấy thì bọn em kích xuất là cắt được các hành động. Cần làm gì làm gì ấy. Thì lúc đấy là bọn em... em sẽ tự liên kết tới với bên... Thế thì bây giờ cái output đầu ra em mong muốn là gì? Đầu ra là... đây là các hành động như này. Thì từ các hành động đấy mình sẽ pick kiểu là cái nào. .. giờ là chú đang xem ở đâu đấy? Các hành động... à Minh, Nguyệt, Lê..."
+      },
+      {
+        "speaker": "Thành Phạm",
+        "timestamp": "03:17",
+        "text": "thì kiểu lúc vào làm với vẫn kiểu những hành động như này. Ok. Đó. Thì ví dụ như hành động... sẽ có hành động như là cái người này tạo Jira. Thì lúc đấy nó sẽ có... mình sẽ tick tắc cho là mình sẽ tạo Jira kiểu thế. Bọn anh cứ làm... làm ra được trước. Mẹ bọn này sao bọn này nói. .. hai bọn nói liên tục cùng nhau thế? Thằng Thành đang nói rồi xong thằng... Thì anh Thành lấy một trong Discord lên là không biết anh kia đang nói. À phải cả... à thế à?"
+      },
+      {
+        "speaker": "Thành Phạm",
+        "timestamp": "03:45",
+        "text": "Thế là... phải thế à?"
+      },
+      {
+        "speaker": "Thành Phạm",
+        "timestamp": "03:49",
+        "text": "Loạn vòng lời. Được rồi nhá. Đây."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "03:52",
+        "text": ".."
+      },
+      {
+        "speaker": "Thành Phạm",
+        "timestamp": "03:52",
+        "text": "đây. .. bây giờ... Thì ý là bây giờ bọn anh kích xuất ra được những thông tin như hành động như kể trong ảnh em gửi này."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "03:57",
+        "text": "Rồi. Đó. Có thể là mình sẽ biết được... Output... output yêu cầu... output yêu cầu của Thành là... ừm ừm... Ông thể nào làm cái gì mà bọn em yêu cầu thì là... Nhưng mà bọn anh... bọn anh cố gắng là phân tích được cái type nhá. Ví dụ như cái này nhá. Ví dụ nghiên cứu LLM này. Thì cái type của nó là liên quan gì? LLM hay gì đấy? Thì..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "04:20",
+        "text": "liên quan đến cái type nữa. Các... các... các cái liên quan ấy. Ví dụ như cái này nhá. Là... cái ý định của nó là gì? Cái intent của nó là gì ấy? Kiểu kiểu thế. Ơ nhưng mà nó còn cái về... à deadline nữa. Kiểu mình có task rồi mình có deadline trong vòng mấy ngày. Thì mấy cái đấy bọn em... nếu mà làm tool code để gửi sang cho bên anh tích hợp với Jira ấy thì... Tích hợp Jira. Sau này liên hệ lại. Bây giờ... bây giờ anh... anh nghỉ... anh nghỉ như thế này Thành này. Ý là... mình định nghĩa ra một vài chiều hướng rõ ràng đi. Bây giờ đầu tiên là... anh... anh... anh sẽ trả về cho em một cái. .. cái dây sau nhá. Đầu tiên là... ơ Shiny. Là ông nào gọi là... là..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "05:04",
+        "text": "là ơ Shiny là ông nào làm cái gì này? Ơ Shiny này. Task này. Task là tên task này. Task... task name này. Task description này. Description rồi xong đấy là anh có tin date. Thì từ... từ anh trả về rồi mời anh phân tích cho em ba cái. .. bốn cái thông tin đấy thì em sẽ tự... em... em... em build cái tool để em tạo ra con... Tức là vì thế là để em đi ra thì mình... thế là em... em cắm theo kiểu thông thường thôi đúng không? Không cần... Đúng rồi. AI tự tạo đúng không? Em ý là bình thường em... em... em kiểu làm sao? Có ra các cái đầu việc thì em có một cái nút em kiểu bấm là accept. Thế là em tạo được. Thế bây giờ AI bình thường thôi đấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "05:43",
+        "text": "Nó tạo về Jira lên thì em cũng sẽ không dùng AI kiểu đấy nữa. Bởi vì... Thế thì em nghĩ là mình... Tại vì các cái thông tin... À tầm một đến hai tool đi. Ví dụ như tool Jira thì bọn anh trả ra tool... tool type là Jira gì đấy. Xong các thông tin em cần ý kiểu là type tool là gì này? Nội dung là gì này? Ơ Shiny là ai này? Rồi là... Đúng. Duolate các kiểu như nào? Rồi là một cái gì... ừm đó kiểu thế. Thì bọn em bắt luôn. Còn em chỉ bắt theo cái type Jira là tùy thôi. Còn các cái tool khác... Mình down tool là nó hiển thị thôi. Down tool hiển thị thôi. Đơn giản là bốn cái trường hợp như là ơ Shiny task name accession delete."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "06:16",
+        "text": "Xong tương lai đấy nếu mà để trước thì... Ví dụ như cái Google Calendar thì ok các kiểu đấy ạ. Ok. Đấy. Thì muốn làm được cái Jira đấy thì đầu tiên là nó phải có LLM nó output ra được. Yêu cầu LLM output ra được bốn cái trường thông tin đấy như ông Thành. Yêu cầu... à output ra danh sách..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "06:37",
+        "text": "công việc này. Bao gồm ơ Shiny task name rồi. .. à..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "06:45",
+        "text": "đấy ok chưa? Rồi. Bây giờ còn tính năng gì nữa không biết chưa?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "06:51",
+        "text": "Đây để anh... anh... anh... anh gửi trước cho anh em trên nhóm chat nhá. Anh em đọc qua nhá."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "07:02",
+        "text": "Đây anh em xem bên Discord nhá. Xem có... có thiếu tính năng gì nữa không?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "07:16",
+        "text": "Em... em bảo nhá. Ở trên... ơ Chunti nó hay gợi ý cái kết quả như là phân tích... à đưa ra các mức độ như kiểu là sắc thái của cuộc họp này. Có mâu thuẫn gì hay không ấy. Kiểu kiểu thế. Tìm cái kết luận đấy nhá. Giống như vừa nãy ai. .. ai ai có bảo cái này đấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "07:36",
+        "text": "Còn... à ý là có một con agent nó kiểu nó cảm biện cái cuộc họp. Nó đưa ra là ví dụ như cuộc họp đấy như nào. Anh nghĩ cái phần đấy ok nhưng mà mình sẽ luôn cho luôn vào cái phần 3. 2 mà anh em để trên cái Discord ấy. Nó là sẽ là cái phần liên quan đến đấy. Đấy đúng rồi. Đúng rồi. Sau cái tổng quát xong thì nó sẽ có luôn một cái. .. ơ một cái section là... đúng rồi ạ. Cái này này. Kiểu như là nhiều mấy cái task ở trên này ấy. Thế này nhá. Thêm một cái task gì đấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "08:09",
+        "text": "Thế anh em sẽ thấy là nó có cái phần là cập nhật lại tri thức cũ dựa trên những cái tri thức mới ấy. Thì hoàn toàn là nếu mà ấy anh em có thể nhìn xem qua thằng Archicon nó vừa mới ra mắt ấy. Thì nó có cái phần là cập nhật ấy."
+      },
+      {
+        "speaker": "Duy Anh Nguyễn",
+        "timestamp": "08:23",
+        "text": "Cập nhật thì bản chất là trước cái thằng Archicon này nó có một con agent để nó kiểm tra xem là cái dữ liệu mới mình đưa vào ấy nó là trùng với dữ liệu cũ. Có thể mình có thể làm được cái như bạn Duy vừa bảo ấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "08:36",
+        "text": "Thì cái đấy làm nó không khó nhá. Nên là anh em... ơ có thể làm được cái tính năng đó. Nó chỉ là... Anh em... ơ xem... xem... xem cho tớ cái. .. ơ cái phần... Nhìn nó ok về phần cơ bản là đủ rồi đấy. Cái phần các cái task xem anh em có thiếu gì không. Bây giờ tớ phân biệt này. Đầu tiên là Nguyệt sẽ tạo cái phần agent GitHub này. Add member và team GitHub. Ờ. Add member. Theo kiểu là xong cái tạo dự án này. Add member này. Với cả cho cái deadline luôn ấy. Ừ. Đây deadline của cái đầu tiên của tớ là trong ngày mai này. Trong sáng mai là phải tạo xong này."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "09:12",
+        "text": "Bây giờ đầu tiên là cái phần liên quan đến cái tính năng là từ âm thanh ra văn bản hiện nay thì làm anh. Em cho. Âm thanh ra văn bản thì... Nãy. .. ơ những... những... những cái phần âm thanh văn bản để từ với Nguyên có thể làm phần này cho. Nguyên. Từ với Nguyên nhận phần này rồi. Âm thanh ra văn bản. Đúng rồi. Văn bản. Có... có phần text để nói đúng không? Có thể là... sẽ cái cái task. Cái task thứ hai là anh em click. Task hay như là hai ông phải làm thêm. Tại vì nó đang còn các cái phần ở bên dưới ví dụ như là... Phần nào ạ? Audio và timestamp này. Thì... thì... Những... những cái thằng liên quan đến âm thanh các thứ là để hết cho. .. cho tới Nguyên. Đó. Ok. Đấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "10:00",
+        "text": "Cái. .. cái âm thanh ra văn bản này. Ở... ở đây không biết có cần đến VAD không nhỉ? Tại vì nó có VAD đúng không? Chắc chắn phải VAD. Ờ chắc phải có VAD ấy. Thì bây giờ nhá nếu mà anh em cảm thấy chưa làm được thì có thể cắt model của OpenAI trước cho nó nhanh. Còn tùy nhá. Ừ. Ok cái phần này cứ để tới bên. Bây giờ hai cái này anh em dự kiến là khi nào xong? Phần này. .. ơ để all in thì chắc là để hết cuối tuần nhá. Để hết. .. để hết cuối. .. cuối. .. để hết tuần nhá. Đúng không? Thì thứ hai trả lại được không? Thứ... ơ thứ hai trong thứ hai anh em gửi một bản release baseline cho anh em. Một họp tiếp một lần lại. Ừ."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "10:43",
+        "text": "Thứ bảy họp ở nhà hay ông dự kiến? Thứ bảy á. Thứ bảy á? Ừ. Thứ bảy gửi nhận thì anh nhận cho nó tương tư. Gấp quá. Thứ tuần nữa là mùng ngày 18. Gửi nhận nhá. Thứ bảy chưa việc đâu. Anh em cứ chia được xem anh em chưa chia được nếu mà mệt thì phải xem tiến độ mấy anh em khác. Tại vì cái phần... Chưa chia đâu mệt rồi. Ừ. Ngày báo chắc đấy. Không. Tại vì cái phần... tại vì cái phần... ơ cái phần thứ ba từ cái phần thứ ba 3. 2 đến 3. 4 thì các cái phần đấy là tới. .. chắc là để anh Hoàng làm xong được. 3. 2 3. 4 là phần nào nhỉ? Cái phần là phân tích nội dung của con cái đó."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "11:26",
+        "text": "Có thể là bỏ tới giả lập như phần cũ trước. Phần đấy. .. ơ chỗ... 3. 4 là có thể là... là..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "11:39",
+        "text": "Nguyệt cộng Hoàng đúng không? Đúng rồi. Hoàng gửi lại. Tớ thấy cái. .. ơ tớ thấy cái phần năm với cả phần 3. 3 nó đang bị trùng nhau không? Phần năm. Cái. .. cái. .. cái. .. cái phần năm là tính năng LLM wiki ấy thì tớ chưa biết nó sẽ như thế nào thì tớ cứ... Ừ cái phần... ờ cái phần này cũng... ờ ok. Được rồi."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "12:12",
+        "text": "Ý là cái phần tính năng là nó build... build... build sẵn cái con đấy rồi nếu mà mình nhận bình thường. Ừ thì nếu mà mình đánh được thì sẽ thay luôn cho cái phần file đơn hàng của mình ấy thì mình... mình sửa nó lại thôi. Thấy cái. .. cái. .. cái. .. cái. .. cái phần... ờ Archicon ấy nó rất là hay đấy. Là nó sẽ... ơ sau khi mình đưa vào nó sẽ xong cái MCP ấy. Thế thì bây giờ cái phần... cái phần thứ năm thì tớ sẽ thay đổi nó vào cái phần tính năng làm slide nhá. Làm slide nhá. Thế thì cứ làm làm slide đi. Làm cái đi. Tính... tính năng slide sau đấy nhá. Slide sau của cái phần... ờ... Còn cái phần... ờ... ờ wiki cứ từ từ nhá không biết ạ. Từ wiki."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "12:54",
+        "text": "Thì bây giờ nếu mà giả sử cái phần thứ ba mà mình chỉ được dùng cái thằng wiki luôn thì có thể tích hợp vào luôn thay. Ừ tích luôn. Tớ còn biết ở đây là có thể dùng LLM wiki. Ừ đúng rồi."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "13:07",
+        "text": "Thế thì bây giờ cái tính năng thứ năm thì chắc là anh với Hoàng làm luôn tại vì nó cũng chung cái phần LLM wiki thôi. Thì cái phần này chắc là đến thứ bảy là xong ấy nhỉ? Xong bảo hết thứ bảy."
+      },
+      {
+        "speaker": "Duy Anh Nguyễn",
+        "timestamp": "13:22",
+        "text": "Tớ nghĩ là nếu mà để cho anh em thoải mái thì cứ để tối chủ nhật anh em sẽ ra một bản đi. Cho nó thoải mái. Tại vì là thứ hai thứ tư nhá. Sáu thứ hai thứ ba. Duy anh với lại thằng... thằng Hoàng kia đang một ông bên Meet, một ông bên đấy nên là đang nói với anh Duy anh quay về cái. .. Discord à? Quay về cái. .. Discord đấy có Meet ý."
+      },
+      {
+        "speaker": "Duy Anh Nguyễn",
+        "timestamp": "13:44",
+        "text": "Ơ không phải Meet đâu. Chưa đâu ấy. Đang có hai luồng. Một luồng Discord, một luồng khác ấy. Chắc là nói lựa chọn với nhau Meet đi. Meet đi. Tại vì anh em... Thế tớ... tớ... được thoát Meet rồi này. Lại Meet rồi. Lại Meet đi. Meet luôn. Meet đi. Tại em đang có mắt thì vào Discord. Đang có mắt thì anh ấy vào Meet thì anh em chơi đâu đây anh em ơi. Meet tại vì Meet thì các em có đi."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "14:07",
+        "text": ".. có... có ghi âm các kiểu mà. Sau này xem lại được. Ơ Discord. Bây giờ... bây giờ chốt chốt nhanh chốt nhanh chốt nhanh. Bây giờ... Người nào biết là được. 3. 2 3. 4 5 là gửi cho Hoàng này. Dự kiến đến thứ bảy Hoàng có ok không?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "14:27",
+        "text": "Thì bây giờ cái phần là cái phần giao diện... cái phần giao diện của Thành ấy. Là Thành sẽ phải chắc là draft cái giao diện lên cho anh em. Nhưng mà cái vấn đề là anh em thì sẽ code chung trên cùng một repo nhá. Tách... phân tách em ra... branch riêng ra thôi nhá."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "14:45",
+        "text": "Có... có vấn đề gì không?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "14:57",
+        "text": "Ý... ý... ý là... ý là anh bảo là mình tạo một cái repo thôi. Mình tạo hai folder backend với lại branch riêng."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "15:04",
+        "text": "Hai repo ạ. Hai repo thế thì kết nối với nhau nó có phức... phức... phức tạp không? Ý là kết nối giữa hai bên ấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "15:18",
+        "text": "Thế thì bây giờ... thế thì bây giờ... bây giờ Thành sẽ phải build cái giao diện lên rồi xong em chắc em phải cấp cho cái. .. cái đặc tả trên bên anh là theo kiểu là cái. .. cái. .. cái. .. cái. .. cái output mà em mong muốn. Đấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "15:41",
+        "text": "Thế thì... thế thì kiểu này làm sao thống nhất để cho anh em làm dễ nhờ. Tại vì bây giờ nhá. Anh em là đang kiểu làm song song và những cái. .. cái. .. cái format vật liệu của mình nó có thể là đang theo ý của từng ông."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "16:06",
+        "text": "Thông tin... ơ tóm tắt là một lần anh em."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "16:13",
+        "text": "Đâu đâu. Thì... thì ý là cái phần đấy. .. cái phần đấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "16:21",
+        "text": ".. Tại vì cho nó thống nhất ấy. Tại vì bây giờ em là làm Facebook web thì em sẽ biết là cái dùng cái trạng nào nó dễ. Bây giờ em bảo là ông viết cho em... ồ station nhưng mà ý là em thống nhất luôn các cái trường mà em không muốn thì có được không?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "16:44",
+        "text": "Ừ. Ok thế thì xong rồi bọn anh viết cái. .. viết cái doc API nhá là được đúng không?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "16:54",
+        "text": "Ok thế bây giờ có cả AI nó... nó... nó có thì chắc là anh em cũng không khó khăn lắm đâu. Tại vì nó cũng đỡ hơn. Thì cái phần giao diện của Thành này thì đang đợi. .. draft lên giao diện khoảng bao lâu Thành?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "17:10",
+        "text": "Nhưng mà phải phải thích hợp. Em phải lên trước rồi xong chờ thích hợp."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "17:20",
+        "text": "Ừ thì... đúng đúng. Thì anh... thì anh em bảo là bây giờ chú draft xong cái giao diện ấy là để chờ thích hợp ấy. Thì khoảng đến thứ... thứ... hết thứ bảy nhá."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "17:33",
+        "text": "Thực ra là từ giờ đến cuộc thi mình còn hơn mười ngày nhưng mà mình muốn lên một cái giao diện trước. Trước... trước một cái MVP trước để anh em mình ghép với nhau trước ấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "17:45",
+        "text": "Muốn... ơ thì đấy đến hết tuần. Khả năng là hết tuần này là trỏ ra được API cho em cả hai bên."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "17:59",
+        "text": "Ừ. Thế thì hết. .. hết. .. hết chủ nhật nhá."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "18:07",
+        "text": "Nhiều API chứ. Sao lại một API?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "18:19",
+        "text": "Có. Anh nghĩ phải có một DB chứ."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "18:27",
+        "text": "Ừ không cần tài khoản đâu. Nhưng mà bây giờ nhá. Tại vì ý... tại vì... Ừ."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "19:02",
+        "text": "Thì... thì cái phần không... cái vấn đề ấy là anh em thấy giao tiếp giữa hai bên nó khác nhau. Nếu mình theo kiểu là mình để hai repo khác nhau lên này. Tại vì nhá. Bây giờ nhá. Anh nói ví dụ như bây giờ em up cái audio lên thì ai sẽ là người lưu audio đấy? Cháu có lưu không?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "19:20",
+        "text": "Ơ thế bây giờ em cho người ta nghe lại thì sao? Em cho người ta nghe lại cái audio thì cái audio nó nằm bên FD hay là bên... bên..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "19:33",
+        "text": "Ừ nhưng mà... nhưng mà anh em nói là cái phần âm thanh thì em đang... đang bấm lại cho người ta nghe lại chứ chị ơi. Anh lưu nhưng mà... nhưng mà..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "19:53",
+        "text": "Rồi."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "20:04",
+        "text": "Thế thì cái kiểu đấy thì anh em nó thiếu kinh nghiệm ấy. Thì kiểu đấy anh em phải mô tả cho anh em theo kiểu là dùng WinIO để up audio vào hay sao hay là trả về cho em cái link ấy. Tại vì..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "20:17",
+        "text": "tại vì anh em ở đây thì có thể là anh em nhiều khi là... là... là theo kiểu là... là... là... là chị đã... đã chưa. .. chưa dùng được cái. .."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "20:41",
+        "text": "Đúng. Còn cái việc xử lý... còn cái việc lưu audio thì anh em sẽ cho người lưu đúng không? Đúng. Đấy. .. đấy. .. đấy. Ý em là như thế. Ý em là theo kiểu là AI... AI nó kiểu là set list. Có thể là nó chỉ truyền vào là nó trả về cho anh em. Còn em quản lý như nào đấy là cái việc lấy tiếng của em. Còn không lấy bên đấy nó sẽ rất là bị nhập nhằng đấy. Là mình sẽ lúc sau mình trao đổi lại. .. qua lại nó rất là nhiều. Đấy thì anh em rõ nhá. Có nghĩa là bốn anh em mình sẽ tạo một cái repo và anh em mình phát triển các cái service. .. các cái đầu API lên đấy tương ứng cho Thành tích hợp sang thôi. Đúng không? Thế thì bây giờ nhá."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "21:17",
+        "text": "Bây giờ cái phần Duy anh... Duy Nguyên sẽ có đầu API nào? Là từ... là chỉ đơn giản là nhận vào cái audio và ra được cái. .. cái. .. cái text. Và Hoàng... Em đang hiểu là phần của anh em là nhận đầu vào là một cái audio. Một cái audio full của cuộc họp. Sau đấy thì sẽ ra một cái transcript mà nó có timestamp này. Có người nói này. Có text. Em để ra API transcript đúng không? Ok. Của anh với của Hoàng này nó sẽ bao gồm API..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "21:51",
+        "text": "mình sẽ trả về cho. .. bên kia là bao gồm là... API tóm tắt riêng. Đúng nhở?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "22:03",
+        "text": "Samurai này. API Samurai này. API..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "22:13",
+        "text": "Không anh. Chỉ là sẽ gọi có chút một đầu gateway nó chỉ khác... khác cái. .. cái. .. cái đuôi sau thôi."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "22:31",
+        "text": "Em đang share ở đâu đấy?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "22:38",
+        "text": "Em chat ở đâu đấy? Chat à? Chat à? Đây là share."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "22:45",
+        "text": "Ok để xem nào."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "22:49",
+        "text": "Đây anh thấy rồi. Thấy rồi. Thấy rồi. Thấy rồi."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "22:56",
+        "text": "Ừ."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "23:14",
+        "text": "Ừ."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "23:23",
+        "text": "Thế thì ý là mỗi lần em gọi thế thì em phải gọi cái API khác nhau đúng không? Hay là... ý là làm sao để..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "23:38",
+        "text": "Rồi. Anh hiểu rồi. Nhưng mà cái vấn đề là nếu mà gọi qua con gateway thì làm sao mà anh phân biệt được là khi nào là... là dùng cái API nào?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "23:47",
+        "text": "Thì em bảo là truyền audio với truyền text vào đúng không? Thì bây giờ em truyền audio vào em đang cần cái speech text. Em truyền text vào thì nó có thể có nhiều API."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "23:58",
+        "text": "Bên... bên... bên... bên đợi ý."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "24:41",
+        "text": "Em nghĩ là bây giờ tôi cứ tách ra đi cho nó dễ đi. Bây giờ... nhắc em là xong. Bây giờ theo cái gateway là nó bị trèo nhau không hề."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "25:07",
+        "text": "Ừ. Ok thế bây giờ..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "25:22",
+        "text": "Ừ. Thì ý của của Nguyên... của Nguyên với lại của Duy anh có hiểu không? Có thể là bây giờ treo đâu một tiếng thì không... không thể chờ xúc tí xúc tả đâu một tiếng mới được. Có nghĩa là phải bắn về một cái góc này đi ấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "25:37",
+        "text": "Ý là cái cái thanh tiến trình ấy. Bắn về thì sẽ lấy được cái xử lý bao nhiêu phần trăm ấy?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "25:53",
+        "text": "Thì cái vị API mà status của doc thì nó sẽ chung cho. .. cho cả của cái. .. của tớ luôn. Cái của Hoàng ấy. Của. .. của Hoàng ấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "26:04",
+        "text": "Tại vì bản chất là cái status là mình sẽ... mình sẽ tìm status cái ID đúng không? Thế nên là dùng chung cả hai bên cũng được."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "26:21",
+        "text": "Ừ. Nhưng mà ý là anh bảo là có một cái API check status ấy Hoàng. Hoàng... Hoàng... ý Thành."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "26:30",
+        "text": "Nhưng mà ý là mình có thể dùng chung. Tại vì... tại vì bản chất là nó theo ID mà đúng không? Theo một dịch vụ của Database hay là lại còn tách Database riêng nữa?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "26:44",
+        "text": "Ừ ok nhá. Thế thì mỗi một cái. .. Ừ ok. Ok thế thì... thế thì mỗi một cái thôi. Thế thì mỗi một cái. .. ơ mỗi. .."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "27:03",
+        "text": "Thôi thôi thôi thôi thôi. Anh... anh... anh... anh nghĩ là thôi. Anh nghĩ là... anh nghĩ là cái phần... cái phần DB thôi. Alo."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "27:39",
+        "text": "Ừ thì... thì... thì Thành có thể làm. Ý... ý... ý là chờ chuẩn bị cái phần DB đấy rồi để để phương pháp cho anh em. Anh em bắn cái thông tin như thế nào cũng được."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "27:59",
+        "text": "Không từ tớ đang để đây luôn. Nói chung chung mới được. Đầu tiên là cái phần của Thành là bao gồm là lưu cả phần backend cổng frontend đúng không?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "28:10",
+        "text": "Rồi."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "28:13",
+        "text": "API Samurai này. API..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "30:02",
+        "text": "Đấy thế thế thế thế thì nếu mà bên... ơ bên... bên phía AI mà chưa mà không có DB thì cái phần chat thì hơi khó nhở? Hay là chưa làm cái phần chat nhở? Cái phần chat là cái phần... ờ cái kiểu cái phần chat là cái phần... cái phần mà theo kiểu là mình hỏi. .. hỏi. .. hỏi đáp thêm ấy. Thì cái phần đấy mình phải lưu theo kiểu là chatbot kiểu agent ấy. Thì nó mới dễ được."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "30:27",
+        "text": "Không... không cần websocket mà mình cần một cái theo kiểu là một cái DB để mình lưu được cái history ấy. Cộng mình lưu một cái draft đăng trên để mình thấy được cái DB để nó proceed được cái. .. cái websheet ấy. Cái history ấy."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "30:47",
+        "text": "Ok. Ok thế thôi nhá. Đây đây tớ... tớ... tớ post ra đây này. Anh em xem video này."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "30:58",
+        "text": "Đây anh... anh... anh em xem tớ liệu thì ở đây có vấn đề gì không?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "31:56",
+        "text": "Anh... anh... ờ anh... anh nhập tên của toàn cái service ở trong ấy thì... thì..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "32:12",
+        "text": "Đấy thì anh... anh chat ở đấy xong rồi có gì tí Thành chụp cái ảnh nhắn vào đấy nhá. Anh giờ anh phải out cái anh. ơ Duy anh xem kiểu xem cái list của tớ liệt kê đấy có vấn đề gì không cậu?"
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "32:46",
+        "text": "Không cái đấy xử lý bên... bên Thành giao diện được mà. Bên cậu khi transcript cậu trả luôn... cậu trả luôn timestamp với lại cậu trả luôn cái. .. cái. .. cái. .. cái ờ làm bên Thành giao diện Thành xử lý được mà."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "33:04",
+        "text": "Trả về... trả về em."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "33:17",
+        "text": "Ok đúng không anh em? Chắc là thế thôi nhá. Anh ra trước."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "33:24",
+        "text": "Thành ơi có gì em để lại cái giao diện em nhắn vào trong nhóm nhá."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "33:28",
+        "text": "Đây anh em. Thế..."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "33:38",
+        "text": "Thế kịp phản ứng."
+      },
+      {
+        "speaker": "Nguyên Phạm Đăng",
+        "timestamp": "34:07",
+        "text": "Ok bye bye anh ạ. Anh Duy anh cũng chuẩn bị xin lỗi đi."
+      },
+      {
+        "speaker": "Minh Nguyễn Lê",
+        "timestamp": "34:14",
+        "text": "Bye bye mọi người."
+      }
+    ],
+    "meeting_date": "2026-05-25",
+    "title": "Hackathon 2026 AI Meeting Core Planning"
+  }
+}

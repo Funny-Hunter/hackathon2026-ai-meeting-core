@@ -43,6 +43,7 @@ Backend demo for an AI meeting analysis assistant. The application imports JSON 
 │   ├── utils/                # Transcript formatting and metadata helpers
 │   └── main.py               # FastAPI app + UI HTML
 ├── data/                     # Sample transcript JSON files
+├── API.md                    # API endpoint documentation and examples
 ├── docker-compose.yml        # Local Neo4j + Qdrant services
 ├── pyproject.toml            # Project metadata and dependencies
 ├── uv.lock                   # Locked dependency versions
@@ -127,95 +128,9 @@ password: password123
 4. After import completes, select the meeting from the dropdown on the right.
 5. Type a question or use suggestion chips such as conclusions, assignments, risks, or deadlines.
 
-## API
+## API Documentation
 
-### `GET /`
-
-Returns the demo web UI.
-
-### `GET /api/transcripts`
-
-Lists transcripts in the `data/` directory and meetings imported during the current runtime.
-
-Example response:
-
-```json
-{
-  "files": [
-    {
-      "filename": "transcript_1.json",
-      "meeting_id": "demo-product-sync",
-      "title": "Product Sync - AI Meeting Assistant",
-      "meeting_date": "2026-05-21",
-      "segments": 7
-    }
-  ],
-  "imported": []
-}
-```
-
-### `POST /api/import`
-
-Imports a transcript into Qdrant and Neo4j.
-
-Request:
-
-```json
-{
-  "filename": "transcript_1.json"
-}
-```
-
-Example response:
-
-```json
-{
-  "meeting_id": "demo-product-sync",
-  "title": "Product Sync - AI Meeting Assistant",
-  "meeting_date": "2026-05-21",
-  "meeting_datetime": "2026-05-21",
-  "topic_key": "product-sync-ai-meeting-assistant",
-  "qdrant_points": 7,
-  "graph": {
-    "backend": "neo4j",
-    "meeting_id": "demo-product-sync",
-    "nodes": 16,
-    "relationships": 32,
-    "nodes_created": 16
-  }
-}
-```
-
-### `POST /api/chat`
-
-Asks a question about an imported meeting. Every chat request uses hybrid retrieval: Qdrant semantic search runs first, then Neo4j graph/entity retrieval runs, then both contexts are merged and sent to the answer LLM.
-
-Request:
-
-```json
-{
-  "meeting_id": "demo-product-sync",
-  "question": "Who is responsible for what?",
-  "chat_history": []
-}
-```
-
-Example response:
-
-```json
-{
-  "answer": "Trang is responsible for checking the ingest pipeline and graph components...",
-  "sources": [
-    {
-      "speaker": "Linh",
-      "timestamp": "02:05",
-      "text": "This week's MVP needs a local demo...",
-      "score": 1.0
-    }
-  ],
-  "route_used": "hybrid"
-}
-```
+API docs are maintained separately in [`API.md`](API.md). When the app is running, FastAPI also serves interactive docs at `http://localhost:8000/docs` and `http://localhost:8000/redoc`.
 
 ## RAG Flow
 
