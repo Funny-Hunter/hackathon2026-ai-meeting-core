@@ -1,13 +1,183 @@
 # Hackathon 2026 AI Meeting Core
 
-Backend demo for an AI meeting analysis assistant. The application imports JSON transcripts from the `data/` directory, indexes transcript chunks in Qdrant, stores the meeting structure in Neo4j, and lets users ask questions about imported meetings through a simple web UI.
+**The memory layer for AI-native organizations**
 
-![alt text](data/images/graph_rag.png)
+AI Meeting transforms conversations into **persistent organizational intelligence**, enabling teams to query, revisit, and act on meeting knowledge long after a meeting ends.
 
-![alt text](data/images/insights_analyze.png)
+---
 
+# Vision & Product Opportunity
+
+## The Problem
+
+Organizations spend hours in meetings every week, but most of that knowledge disappears once the meeting ends.
+
+Important information is often lost because:
+
+- Action items become fragmented across chats, documents, and project management tools
+- Key decisions are buried inside long transcripts
+- Teams lose context across weeks of discussions
+- The same conversations happen repeatedly because past reasoning is hard to find
+- New team members struggle to understand historical decisions
+
+
+Existing meeting assistants mostly generate static summaries, but they cannot preserve knowledge as a searchable memory system that grows over time.
+
+This creates execution drag, duplicated work, and reduced decision velocity.
+
+---
+
+## Our Solution: AI Meeting
+
+AI Meeting transforms raw meeting conversations into **persistent, queryable organizational intelligence**.
+
+The platform processes meetings end-to-end — from audio understanding to actionable execution workflows.
+
+It provides:
+
+### **Offline Meeting Intelligence**
+
+Upload raw meeting audio and automatically:
+
+- Convert speech to text with speaker-aware transcription
+- Detect speakers and align timestamps
+- Replay audio directly from transcript segments
+- Correct transcription errors using LLM refinement
+
+This turns raw meeting recordings into accurate, structured transcripts.
+
+---
+
+### **Structured Meeting Understanding**
+
+AI automatically extracts:
+
+- Participants
+- Key discussion topics
+- Decisions and outcomes
+- Action items
+- Open concerns and unresolved risks
+- Recommended next steps
+
+This converts unstructured conversations into structured organizational knowledge.
+
+---
+
+### **Hybrid Conversational Retrieval**
+
+AI Meeting combines:
+
+- **Semantic Memory** using Qdrant for contextual recall
+- **Relational Memory** using Neo4j for graph reasoning
+- **Speaker-aware chunking** for precise transcript retrieval
+- **GraphRAG orchestration** using LangGraph for grounded multi-hop reasoning
+
+Users can ask natural-language questions such as:
+
+- What did Trang say about deployment risks?
+- Who owns this action item?
+- What concerns remain unresolved?
+- How has this topic evolved across meetings?
+
+The result is explainable conversational intelligence grounded in historical meeting context.
+
+---
+
+### **Visual Knowledge Intelligence**
+
+Generate intelligent visualizations such as:
+
+- Meeting mindmaps
+- Speaker-topic relationship graphs
+- Decision flow diagrams
+
+This makes complex discussions easier to understand at a glance.
+
+---
+
+### **Workflow Automation**
+
+AI converts decisions into execution-ready tasks.
+
+Generated outputs include:
+
+- Assignee
+- Task name
+- Task description
+- Due date
+
+Tasks can be automatically integrated into Jira workflows.
+
+---
+
+AI Meeting turns conversations into memory, memory into knowledge, and knowledge into action.
+
+---
+
+## Why This Matters
+
+AI Meeting enables:
+
+- Preserved decision rationale
+- Accountability tracking
+- Faster execution cycles
+- Better onboarding
+- Reduced repeated discussions
+- Searchable institutional memory
+
+For startups: faster iteration.
+
+For enterprises: scalable knowledge continuity.
+
+---
+
+## Innovation
+
+Unlike traditional summarizers, AI Meeting provides:
+
+- Hybrid Graph + Vector Memory
+- Entity-aware conversational reasoning
+- Persistent meeting intelligence
+- Explainable retrieval traces
+- Long-term organizational context accumulation
+- Replay audio from transcript timestamps
+- Correct transcript errors with LLM refinement
+- Visual Knowledge Intelligence by Intelligent meeting mindmaps
+- Integration with Jira for automatic task creation
+- Automatic slide generation
+
+---
+
+## Business Potential
+
+Commercialization opportunities:
+
+### SaaS Collaboration Intelligence
+For remote teams and startups
+
+- Searchable memory workspace
+- Decision traceability
+- AI-powered accountability management
+
+### Enterprise Knowledge Infrastructure
+
+- Meeting compliance traceability
+- Cross-team memory graphs
+- Historical decision intelligence
+
+### Developer API Platform
+
+Expose APIs for:
+
+- Transcript intelligence
+- Organizational memory graphs
+- Conversational historical reasoning
+
+---
 ## Chat Pipeline Architecture
 
+![Architecture Overview](data/images/graph_rag.png)
+![Meeting Intelligence Insights](data/images/insights_analyze.png)
 ![alt text](data/images/chat_langgraph_flow.svg)
 
 ## Key Features
